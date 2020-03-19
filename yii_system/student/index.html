@@ -6,6 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.min.js"></script>
     <script src="js/app.js"></script>
+<!--    <base href="/student/">-->
 </head>
 <body>
 
@@ -23,6 +24,25 @@
     .error {
         color: red;
         margin-bottom: 15px;
+    }
+
+    ul{
+        padding-left: 0px;
+    }
+
+    ul.pagination li {
+        display: inline-block;
+        list-style: none;
+        padding: 2px;
+    }
+
+    ul.pagination li.active a{
+        color: blue;
+    }
+
+    ul.pagination li a {
+        text-decoration: none;
+        color: black
     }
 </style>
 
