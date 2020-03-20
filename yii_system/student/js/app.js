@@ -8,12 +8,12 @@ studentApp.config(function($routeProvider, $locationProvider) {
             templateUrl: 'list.html',
             controller: 'indexCtrl'
         })
+        .when('/create', {
+            templateUrl: 'create.html',
+        })
         .when('/:page', {
             templateUrl: 'list.html',
             controller: 'indexCtrl'
-        })
-        .when('/create', {
-            templateUrl: 'create.html',
         })
         .when('/:id/edit', {
             templateUrl: 'edit.html',
