@@ -19,8 +19,38 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `yii_student`
+-- Database: `yii_application`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `applications`
+--
+
+CREATE TABLE `applications` (
+  `id` int(11) NOT NULL,
+  `study_id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `applications`
+--
+
+INSERT INTO `applications` (`id`, `study_id`, `name`) VALUES
+(3, 0, 'Application B'),
+(4, 0, 'Application C'),
+(5, 0, 'Application D'),
+(6, 0, 'Application E'),
+(7, 0, 'Application F'),
+(8, 0, 'Application G'),
+(9, 0, 'Application H'),
+(10, 0, 'Application I'),
+(11, 0, 'Application J'),
+(12, 0, 'Application K'),
+(13, 0, 'Application L'),
+(14, 0, 'Application M');
 
 -- --------------------------------------------------------
 
@@ -38,12 +68,12 @@ CREATE TABLE `migration` (
 --
 
 INSERT INTO `migration` (`version`, `apply_time`) VALUES
-('m000000_000000_base', 1584349905),
-('m130524_201442_init', 1584418269),
-('m190124_110200_add_verification_token_column_to_user_table', 1584418270),
-('m200316_090303_create_students_table', 1584350040),
-('m200317_041247_create_students_table', 1584418448),
-('m200323_050135_add_access_token_column_to_user_table', 1584940981);
+('m000000_000000_base', 1584954370),
+('m130524_201442_init', 1584954374),
+('m190124_110200_add_verification_token_column_to_user_table', 1584954374),
+('m200323_084625_create_applications_table', 1584954374),
+('m200323_084953_creat_students_table', 1584954374),
+('m200323_090708_create_study_plans_table', 1584954663);
 
 -- --------------------------------------------------------
 
@@ -115,9 +145,18 @@ INSERT INTO `students` (`id`, `first_name`, `last_name`, `phone`, `email`, `dob`
 (78, 'vu', '20', NULL, NULL, NULL),
 (79, 'vu', '20', NULL, NULL, NULL),
 (80, 'vu', '21', NULL, NULL, NULL),
-(81, 'Vu', '25', '1234567', 'abc', NULL),
-(82, 'Vu', 'Dinh', '0795282406', 'abc@gmail.com', NULL),
-(83, 'Vu', 'Dinh', '0795282406', 'abc@gmail.com', NULL);
+(81, 'Vu', '25', '1234567', 'abc', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `study_plans`
+--
+
+CREATE TABLE `study_plans` (
+  `id` int(11) NOT NULL,
+  `study_plan_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`study_plan_json`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -129,7 +168,6 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `access_token` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
   `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -140,15 +178,14 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `username`, `auth_key`, `access_token`, `password_hash`, `password_reset_token`, `email`, `status`, `created_at`, `updated_at`, `verification_token`) VALUES
-(1, 'vudinh', 'NfZTnNbCvfTfvPPkWZY_mVLDHlQ0ogBI', 'OsDYLKLD_GN6r2Y16hPSAlt7iLYxTDLi', '$2y$13$YEhsxb22hgHypAy8mnORieRPNG77gsUgMfK6N6rXRwlRf.wGUUMza', NULL, '', 9, 1584943094, 1584943094, NULL);
-
---
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `applications`
+--
+ALTER TABLE `applications`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `migration`
@@ -160,6 +197,12 @@ ALTER TABLE `migration`
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `study_plans`
+--
+ALTER TABLE `study_plans`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -176,16 +219,28 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `applications`
+--
+ALTER TABLE `applications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+
+--
+-- AUTO_INCREMENT for table `study_plans`
+--
+ALTER TABLE `study_plans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
