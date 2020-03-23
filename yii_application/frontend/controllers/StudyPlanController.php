@@ -9,13 +9,8 @@ namespace frontend\controllers;
 
 use frontend\resource\StudyPlan;
 
-/**
- * Class PostController
- *
- * @author Zura Sekhniashvili <zurasekhniashvili@gmail.com>
- * @package frontend\controllers
- */
-class StudyPlanController extends ActiveController
+
+class StudyplanController extends ActiveController
 {
     public $modelClass = StudyPlan::class;
 

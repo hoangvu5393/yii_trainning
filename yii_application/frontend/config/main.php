@@ -53,6 +53,7 @@ return [
             'rules' => [
                 ['class' => UrlRule::class, 'controller' => ['student']],
                 ['class' => UrlRule::class, 'controller' => ['application']],
+                ['class' => UrlRule::class, 'controller' => ['studyplan']],
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'user',
