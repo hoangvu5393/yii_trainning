@@ -53,7 +53,15 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => UrlRule::class, 'controller' => ['student']]
+                ['class' => UrlRule::class, 'controller' => ['student']],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'user',
+                    'extraPatterns' => [
+                        'POST login' => 'login',
+                        'POST add' => 'add',
+                    ]
+                ],
             ],
         ],
     ],

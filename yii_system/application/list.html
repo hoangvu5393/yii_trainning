@@ -1,0 +1,40 @@
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+<div>
+    <h1> List applcation </h1>
+    <div style="margin-bottom: 20px">
+        <a ng-href="#!create">Create</a>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Study plan</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="application in applications">
+            <td>{{ application.id }}</td>
+            <td>{{ application.name }}</td>
+            <td></td>
+            <td>
+                <a ng-href="#!/{{ application.id }}/edit">Edit</a>
+                <span> | </span>
+                <input type="submit" ng-controller="deleteCtrl" ng-click="delete(application)" value="Delete" />
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    <ul class="pagination">
+        <li ng-repeat="page in pagination.page_count" ng-class="pagination.current_page == page ? 'active' : ''">
+            <a ng-href="#!{{ page }}">{{ page }}</a>
+        </li>
+    </ul>
+</div>
