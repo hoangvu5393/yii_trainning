@@ -1,0 +1,20 @@
+
+<div>
+    <h1> Create student </h1>
+</div>
+
+<div ng-controller="updateApplicationCtrl">
+    <p class="success" ng-if="response.status == 200">{{ message }}</p>
+    <p class="error" ng-if="response.status != 200">{{ message }}</p>
+    <form novalidate class="simple-form" >
+        <label>First name: {{ student.first_name }}</label><br />
+        <label>Last name: {{ student.last_name }}</label><br />
+        <label>Study Plan:
+            <select name="singleSelect" ng-model="student.application_id">
+                <option ng-repeat="application in applications" ng-selected="selectApplication === application.id" value="{{ application.id }}">{{ application.name }}</option>
+            </select><br>
+        </label><br />
+        <input type="button" ng-click="reset()" value="Reset" />
+        <input type="submit" ng-click="update(student)" value="Save" />
+    </form>
+</div>

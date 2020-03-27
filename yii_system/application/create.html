@@ -8,7 +8,11 @@
     <p class="error" ng-if="response.status != 201">{{ message }}</p>
     <form novalidate class="simple-form" >
         <label>Name: <input type="text" ng-model="application.name" /></label><br />
-        <label>Study Plan: <input type="text" ng-model="application.study_id" /></label><br />
+        <label>Study Plan:
+            <select name="singleSelect" ng-model="application.study_id">
+                <option ng-repeat="studyPlan in studyPlans" value="{{ studyPlan.id }}">{{ studyPlan.name }}</option>
+            </select><br>
+        </label><br />
         <input type="button" ng-click="reset()" value="Reset" />
         <input type="submit" ng-click="store(application)" value="Save" />
     </form>

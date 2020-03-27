@@ -28,6 +28,7 @@ class Application extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['study_id'], 'safe'],
         ];
     }
 
@@ -40,5 +41,26 @@ class Application extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudyPlans()
+    {
+        return $this->hasMany(StudyPlan::className(), ['id' => 'study_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudent()
+    {
+        return $this->hasOne(Student::className(), ['id' => 'application_id']);
+    }
+
+    public function fields()
+    {
+        return ['id', 'name', 'studyPlans'];
     }
 }

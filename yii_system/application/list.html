@@ -15,7 +15,6 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Study plan</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -23,7 +22,6 @@
         <tr ng-repeat="application in applications">
             <td>{{ application.id }}</td>
             <td>{{ application.name }}</td>
-            <td></td>
             <td>
                 <a ng-href="#!/{{ application.id }}/edit">Edit</a>
                 <span> | </span>

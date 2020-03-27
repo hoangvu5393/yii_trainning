@@ -1,6 +1,8 @@
 'use strict';
 
-var studentApp = angular.module("studentApp", ['ngRoute']);
+let studentApp = angular.module("studentApp", ['ngRoute']);
+let apiUrl = 'http://local.students.com'
+let apiApplicationUrl = 'http://local.application.com'
 
 studentApp.config(function($routeProvider, $locationProvider) {
     $routeProvider
@@ -10,6 +12,10 @@ studentApp.config(function($routeProvider, $locationProvider) {
         })
         .when('/create', {
             templateUrl: 'create.html',
+        })
+        .when('/:id/create-application', {
+            templateUrl: 'create_application.html',
+            controller: 'createApplicationCtrl'
         })
         .when('/:page', {
             templateUrl: 'list.html',
@@ -31,9 +37,9 @@ studentApp.controller('indexCtrl', ['$scope', '$http', '$routeParams', function(
     let page = $routeParams.page
     let url = ''
     if(!page) {
-        url = 'http://yii.student/students'
+        url = apiUrl + '/students'
     } else {
-        url = 'http://yii.student/students?page=' + page
+        url = apiUrl + '/students?page=' + page
     }
     $http({
         method: 'GET',
@@ -61,11 +67,12 @@ studentApp.controller('indexCtrl', ['$scope', '$http', '$routeParams', function(
 studentApp.controller('storeCtrl', ['$scope', '$http', function($scope, $http){
     $scope.store = function(student) {
         let data = student
+        console.log(data)
         let message = ''
         $http({
             method: 'POST',
             data: data,
-            url: 'http://yii.student/students',
+            url: apiUrl + '/students',
         }).then(function (response) {
             message = "Stored successfully"
             $scope.response = response
@@ -81,12 +88,45 @@ studentApp.controller('editCtrl', ['$scope', '$http', '$routeParams', function($
     let id = $routeParams.id
     $http({
         method: 'GET',
-        url: 'http://yii.student/students/' + id
+        url: apiUrl + '/students/' + id
     }).then(function (response){
         $scope.student = response.data
     },function (error){
         console.log(error);
     });
+}]);
+
+studentApp.controller('createApplicationCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
+    let id = $routeParams.id
+    $http({
+        method: 'GET',
+        url: apiApplicationUrl + '/applications/createapplication/' + id
+    }).then(function (response){
+        $scope.student = response.data.student
+        $scope.applications = response.data.applications
+    },function (error){
+        console.log(error);
+    });
+}]);
+
+studentApp.controller('updateApplicationCtrl', ['$scope', '$http', function($scope, $http){
+    $scope.update = function(student) {
+        let data = student
+        console.log(data)
+        let message = ''
+        $http({
+            method: 'PATCH',
+            data: data,
+            url: apiApplicationUrl + '/students/' + student.id,
+        }).then(function (response) {
+            message = "Stored successfully"
+            $scope.response = response
+            $scope.message = message
+        }, function (error) {
+            $scope.response = error
+            $scope.message = error.data[0].message
+        });
+    }
 }]);
 
 studentApp.controller('updateCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
@@ -97,7 +137,7 @@ studentApp.controller('updateCtrl', ['$scope', '$http', '$routeParams', function
         $http({
             method: 'PUT',
             data: data,
-            url: 'http://yii.student/students/' + id
+            url: apiUrl + '/students/' + id
         }).then(function (response) {
             message = "Updated successfully"
             $scope.response = response
@@ -114,7 +154,7 @@ studentApp.controller('deleteCtrl', ['$scope', '$http', function($scope, $http){
         let studentId = student.id
         $http({
             method: 'DELETE',
-            url: 'http://yii.student/students/' + studentId
+            url: apiUrl + '/students/' + studentId
         }).then(function (response) {
             let index = $scope.students.findIndex( student => student.id === studentId)
             $scope.students.splice(index, 1)

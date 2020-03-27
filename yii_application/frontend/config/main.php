@@ -62,6 +62,24 @@ return [
                         'POST add' => 'add',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'application',
+                    'extraPatterns' => [
+                        'GET add' => 'add',
+                        'GET createapplication/<id>' => 'create-application',
+                        'PATCH storeapplication' => 'store-application',
+
+                        'OPTIONS storeapplication' => 'options'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'student',
+                    'extraPatterns' => [
+                        'GET sync' => 'sync',
+                    ]
+                ],
             ],
         ],
 

@@ -1,4 +1,6 @@
 <?php
+use yii\di\Instance;
+
 return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -9,5 +11,7 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'rabbitmq' => require(__DIR__ . '/rabbitmq.php'),
+        'container' => require(__DIR__ . '/service.php'),
     ],
 ];

@@ -27,6 +27,7 @@ class ActiveController extends \yii\rest\ActiveController
                 'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
                 'Access-Control-Request-Headers' => ['*'],
                 'Access-Control-Expose-Headers' => ['*'],
+                'Access-Control-Max-Age' => 3600,
             ],
         ];
 
@@ -39,4 +40,16 @@ class ActiveController extends \yii\rest\ActiveController
 
         return $behaviors;
     }
+
+//    protected function verbs()
+//    {
+//        return [
+//            'store-application' => ['PUT','PATCH'],
+//            'index' => ['GET', 'HEAD'],
+//            'view' => ['GET', 'HEAD'],
+//            'create' => ['POST'],
+//            'update' => ['PUT', 'PATCH'],
+//            'delete' => ['DELETE'],
+//        ];
+//    }
 }

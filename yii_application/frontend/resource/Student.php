@@ -7,3 +7,4 @@ class Student extends \common\models\Student
 {
 
 }
+

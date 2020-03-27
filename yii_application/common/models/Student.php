@@ -31,7 +31,7 @@ class Student extends \yii\db\ActiveRecord
     {
         return [
             [['first_name', 'last_name', 'phone', 'email'], 'required'],
-            [['dob'], 'safe'],
+            [['dob', 'application_id'], 'safe'],
             [['first_name', 'last_name', 'phone', 'email'], 'string', 'max' => 255],
         ];
     }
@@ -49,5 +49,29 @@ class Student extends \yii\db\ActiveRecord
             'email' => 'Email',
             'dob' => 'Dob',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getApplications()
+    {
+        return $this->hasMany(Application::className(), ['id' => 'application_id']);
+    }
+
+    public function sync($response) {
+        $action = $response['action'];
+        $data = $response['data'];
+
+        if($action == 'create') {
+            $model = new Student();
+            $request = Yii::$app->getRequest()->getBodyParams();
+            $model->load(json_encode($data), '');
+            if($model->save()) {
+                echo "created";
+            } else {
+                echo "fail";
+            }
+        }
     }
 }

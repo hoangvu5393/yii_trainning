@@ -6,9 +6,10 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "students".
+ * This is the model class for table "study_plans".
  *
  * @property int $id
+ * @property string $name
  * @property longtext $study_plan_json
  */
 class StudyPlan extends \yii\db\ActiveRecord
@@ -27,6 +28,7 @@ class StudyPlan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name'], 'required'],
             [['study_plan_json'], 'required'],
         ];
     }
@@ -38,7 +40,16 @@ class StudyPlan extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'name' => 'Name',
             'study_plan_json' => 'Study Plan Json',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getApplication()
+    {
+        return $this->hasOne(Application::className(), ['id' => 'study_id']);
     }
 }

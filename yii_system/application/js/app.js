@@ -1,6 +1,7 @@
 'use strict';
 
-var applicationApp = angular.module("applicationApp", ['ngRoute']);
+let applicationApp = angular.module("applicationApp", ['ngRoute']);
+let apiUrl = 'http://local.application.com'
 
 applicationApp.config(function($routeProvider, $locationProvider) {
     $routeProvider
@@ -10,6 +11,7 @@ applicationApp.config(function($routeProvider, $locationProvider) {
         })
         .when('/create', {
             templateUrl: 'create.html',
+            controller: 'createCtrl'
         })
         .when('/:page', {
             templateUrl: 'list.html',
@@ -31,9 +33,9 @@ applicationApp.controller('indexCtrl', ['$scope', '$http', '$routeParams', funct
     let page = $routeParams.page
     let url = ''
     if(!page) {
-        url = 'http://yii.application/applications'
+        url = apiUrl + '/applications'
     } else {
-        url = 'http://yii.application/applications?page=' + page
+        url = apiUrl + '/applications?page=' + page
     }
     $http({
         method: 'GET',
@@ -58,15 +60,26 @@ applicationApp.controller('indexCtrl', ['$scope', '$http', '$routeParams', funct
     });
 }]);
 
+applicationApp.controller('createCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
+    let page = $routeParams.page
+    $http({
+        method: 'GET',
+        url: apiUrl + '/applications/add'
+    }).then(function (response){
+        $scope.studyPlans = response.data.study_plans
+    },function (error){
+        console.log(error);
+    });
+}]);
+
 applicationApp.controller('storeCtrl', ['$scope', '$http', function($scope, $http){
     $scope.store = function(application) {
         let data = application
-        console.log(application)
         let message = ''
         $http({
             method: 'POST',
             data: data,
-            url: 'http://yii.application/applications',
+            url: apiUrl + '/applications',
         }).then(function (response) {
             message = "Stored successfully"
             $scope.response = response
@@ -82,9 +95,13 @@ applicationApp.controller('editCtrl', ['$scope', '$http', '$routeParams', functi
     let id = $routeParams.id
     $http({
         method: 'GET',
-        url: 'http://yii.application/applications/' + id
+        url: apiUrl + '/applications/' + id
     }).then(function (response){
-        $scope.application = response.data
+        $scope.application = response.data.application
+        if(!response.data.application.studyPlans) {
+            $scope.selectApplication = response.data.application.studyPlans[0]['id']
+        }
+        $scope.studyPlans = response.data.study_plans
     },function (error){
         console.log(error);
     });
@@ -98,7 +115,7 @@ applicationApp.controller('updateCtrl', ['$scope', '$http', '$routeParams', func
         $http({
             method: 'PUT',
             data: data,
-            url: 'http://yii.application/applications/' + id
+            url: apiUrl + '/applications/' + id
         }).then(function (response) {
             message = "Updated successfully"
             $scope.response = response
@@ -115,7 +132,7 @@ applicationApp.controller('deleteCtrl', ['$scope', '$http', function($scope, $ht
         let applicationId = application.id
         $http({
             method: 'DELETE',
-            url: 'http://yii.application/applications/' + applicationId
+            url: apiUrl + '/applications/' + applicationId
         }).then(function (response) {
             let index = $scope.applications.findIndex( application => application.id === applicationId)
             $scope.applications.splice(index, 1)

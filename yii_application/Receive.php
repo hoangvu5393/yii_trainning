@@ -1,27 +1,29 @@
 <?php
-/**
- * User: TheCodeholic
- * Date: 8/29/2019
- * Time: 8:57 AM
- */
+clearstatcache();
 
-namespace frontend\controllers;
 
-use frontend\resource\Student;
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . "/frontend/resource/Student.php";
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-/**
- * Class PostController
- *
- * @author Zura Sekhniashvili <zurasekhniashvili@gmail.com>
- * @package frontend\controllers
- */
-class StudentController extends ActiveController
+spl_autoload_extensions('myAutoLoader');
+
+function myAutoLoader($className) {
+    $path = __DIR__ . "/frontend/resource";
+    $extension = ".php";
+    $fullpath = $path . $className . $extension;
+}
+
+
+class Receive
 {
-    public $modelClass = Student::class;
+    protected $student;
 
-
-    public function actionSync() {
+    public function __construct (Student $student)  {
+        $this->student = $student;
+    }
+    public function receive() {
         $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
         $channel = $connection->channel();
         $queueName = 'student';
@@ -31,9 +33,8 @@ class StudentController extends ActiveController
         echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
         $callback = function ($msg) {
-            $student = new Student();
             $response = json_decode($msg->body, true);
-            $student->sync($response);
+            $this->student->sync($response);
         };
 
         $channel->basic_consume($queueName, '', false, true, false, false, $callback);
@@ -43,3 +44,8 @@ class StudentController extends ActiveController
         }
     }
 }
+
+$student = new Student();
+$receive = new Receive($student);
+$receive->receive();
+

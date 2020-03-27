@@ -8,7 +8,7 @@
 <div>
     <h1> List student </h1>
     <div style="margin-bottom: 20px">
-        <a ng-href="#!create">Create</a>
+        <a ng-href="#!create" style="margin-right: 15px">Create</a>
     </div>
     <table>
         <thead>
@@ -32,6 +32,7 @@
             <td>{{ student.dob }}</td>
             <td>
                 <a ng-href="#!/{{ student.id }}/edit">Edit</a>
+                <a ng-href="#!/{{ student.id }}/create-application">Create application</a>
                 <span> | </span>
                 <input type="submit" ng-controller="deleteCtrl" ng-click="delete(student)" value="Delete" />
             </td>
